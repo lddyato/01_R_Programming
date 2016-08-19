@@ -67,7 +67,7 @@ Printing
 The : operator is used to create integer sequences.
 
 	
-	Data Types - Part 2
+Data Types - Part 2
 ===================
 
 Creating vectors
