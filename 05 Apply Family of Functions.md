@@ -1,26 +1,24 @@
 # Apply Family of Functions
 
 <img src="http://img.blog.csdn.net/20140929152136203?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveG11ZWNvcg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-lapply()
-========
+
+## lapply()
+
 
 Looping on the command line
 ---------------------------
 
 Writing for and while loops is useful when programming but not particularly easy when working interactively on the command line. There are some functions which implement looping to make life easier.
 
-* lapply(): Loop over a list and evaluate and function on each element
-* sapply(): Same as lapply() but try to simplify the result
-* apply(): Apply a function over the margins of an array
-* tapply(): Apply a function over subsets of a vector
-* mapply(): Multivariate version of lapply
+* **lapply()**: Loop over a list and evaluate and function on each element
+* **sapply()**: Same as lapply() but try to simplify the result
+* **apply()**: Apply a function over the margins of an array
+* **tapply()**: Apply a function over subsets of a vector
+* **mapply()**: Multivariate version of lapply
 
 An auxiliary function split() is also useful, particularly in conjunction with lapply().
 
-lapply()
---------
-
-lapply() takes three arguments
+**lapply() takes three arguments**
 
 1. A list x (if x is not a list it will be coerced to a list using as.list)
 2. A function (or name of a function) FUN
@@ -123,8 +121,7 @@ An anonymous function for extracting the first column of each matrix:
 	$b
 	[1] 1 2 3
 
-sapply()
---------
+## sapply()
 
 sapply() will try to simplify the result of lapply if possible
 
@@ -151,8 +148,8 @@ Here's the lapply() behavior again:
 	> sapply(x, mean)
 	        a         b         c         d 
  	2.500000 -0.211780  1.073342  5.050767
-apply()
-=======
+
+## apply()
 
 apply() is used to evaluate a function (often an anonymous one) over the margins of an array
 
@@ -240,8 +237,8 @@ Average matrix in an array
 	[2,] -0.04269955 0.07289623
 	
 	
-	tapply()
---------
+## tapply()
+
 
 tapply() is used to apply a function over subsets of a vector. I don't know why it's called tapply().
 
@@ -291,8 +288,7 @@ Find group ranges.
 	$`3`
 	[1] -0.2201542  1.5680852
 
-split()
-=======
+## split()
 
 split takes a vector or other objects and splits it into groups determined by a factor or a list of factors.
 
@@ -338,8 +334,7 @@ A common idiom is split() followed by an lapply()
 	[1] 0.7460637
 
 
-Splitting a Data Frame
-----------------------
+### Splitting a Data Frame
 
 	> library(datasets)
 	> head(airquality)
@@ -390,8 +385,7 @@ Remove NAs
 	Wind     11.62258  10.26667   8.941935   8.793548  10.18000
 
 
-Splitting on More than One Level
---------------------------------
+### Splitting on More than One Level
 
 	> x <- rnorm(10)
 	> f1 <- gl(2, 5)
@@ -432,8 +426,7 @@ Use drop = TRUE to get rid of empty levels.
 	 $ 2.4: num [1:2] -0.44 0.394
 	 $ 2.5: num [1:2] 1.333 -0.414
 	 
-mapply()
-========
+## mapply()
 
 mapply() is a multivariate apply of sorts which applies a function in parallel over a set of arguments.
 
@@ -469,7 +462,6 @@ Instead we can do:
 
 
 Vectorizing a function
-----------------------
 
 Define a custom function:
 
