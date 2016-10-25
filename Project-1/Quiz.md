@@ -1,9 +1,33 @@
+
+```r
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+    ## 'directory' is a character vector of length 1 indicating the location of
+    ## the CSV files
+## 'pollutant' is a character vector of length 1 indicating the name of the
+    ## pollutant for which we will calculate the mean; either 'sulfate' or
+    ## 'nitrate'.
+## 'id' is an integer vector indicating the monitor ID numbers to be used
+## Return the mean of the pollutant across all monitors list in the 'id'
+## vector (ignoring NA values)
+    data = numeric()
+    for (i in id) {
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
+            ".csv", sep = ""))
+data = c(data, newRead[[pollutant]])
+    }
+    return(mean(data, na.rm = TRUE))
+}
+## Alternative
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+    data = lapply(id, function(i) read.csv(paste(directory, "/", formatC(i, 
+        width = 3, flag = "0"), ".csv", sep = ""))[[pollutant]])
+return(mean(unlist(data), na.rm = TRUE))
+}
+```
+
 1. 
 What value is returned by the following call to pollutantmean()? You should round your output to 3 digits.
 
-
-
-1
 pollutantmean("specdata", "sulfate", 1:10)
 
 3.666
@@ -83,12 +107,37 @@ pollutantmean("specdata", "nitrate")
 1
 point
 5. 
+
+```r
+complete <- function(directory, id = 1:332) {
+    ## 'directory' is a character vector of length 1 indicating the location of
+    ## the CSV files
+## 'id' is an integer vector indicating the monitor ID numbers to be used
+## Return a data frame of the form: id nobs 1 117 2 1041 ...  where 'id' is
+    ## the monitor ID number and 'nobs' is the number of complete cases
+    nobs = numeric()
+    for (i in id) {
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
+            ".csv", sep = ""))
+        nobs = c(nobs, sum(complete.cases(newRead)))
+    }
+    return(data.frame(id, nobs))
+}
+
+## Alternative
+
+complete <- function(directory, id = 1:332) {
+    f <- function(i) {
+        data = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
+            ".csv", sep = ""))
+        sum(complete.cases(data))
+    }
+    nobs = sapply(id, f)
+    return(data.frame(id, nobs))
+}
+```
 What value is printed at end of the following code?
 
-
-
-1
-2
 cc <- complete("specdata", c(6, 10, 20, 34, 100, 200, 310))
 print(cc$nobs)
 
@@ -155,6 +204,30 @@ print(cc[use, "nobs"])
 1
 point
 8. 
+
+
+```r
+corr <- function(directory, threshold = 0) {
+    ## 'directory' is a character vector of length 1 indicating the location of
+    ## the CSV files
+## 'threshold' is a numeric vector of length 1 indicating the number of
+    ## completely observed observations (on all variables) required to compute
+    ## the correlation between nitrate and sulfate; the default is 0
+## Return a numeric vector of correlations
+    df = complete(directory)
+    ids = df[df["nobs"] > threshold, ]$id
+    corrr = numeric()
+    for (i in ids) {
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
+            ".csv", sep = ""))
+        dff = newRead[complete.cases(newRead), ]
+        corrr = c(corrr, cor(dff$sulfate, dff$nitrate))
+    }
+    return(corrr)
+}
+```
+
+
 What value is printed at end of the following code?
 
 
