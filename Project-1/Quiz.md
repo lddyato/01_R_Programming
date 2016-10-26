@@ -11,16 +11,14 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
 ## vector (ignoring NA values)
     data = numeric()
     for (i in id) {
-newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
-            ".csv", sep = ""))
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
 data = c(data, newRead[[pollutant]])
     }
     return(mean(data, na.rm = TRUE))
 }
 ## Alternative
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-    data = lapply(id, function(i) read.csv(paste(directory, "/", formatC(i, 
-        width = 3, flag = "0"), ".csv", sep = ""))[[pollutant]])
+    data = lapply(id, function(i) read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))[[pollutant]])
 return(mean(unlist(data), na.rm = TRUE))
 }
 ```
@@ -117,9 +115,8 @@ complete <- function(directory, id = 1:332) {
     ## the monitor ID number and 'nobs' is the number of complete cases
     nobs = numeric()
     for (i in id) {
-newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
-            ".csv", sep = ""))
-        nobs = c(nobs, sum(complete.cases(newRead)))
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
+nobs = c(nobs, sum(complete.cases(newRead)))
     }
     return(data.frame(id, nobs))
 }
@@ -128,8 +125,7 @@ newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"),
 
 complete <- function(directory, id = 1:332) {
     f <- function(i) {
-        data = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
-            ".csv", sep = ""))
+        data = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
         sum(complete.cases(data))
     }
     nobs = sapply(id, f)
@@ -218,8 +214,7 @@ corr <- function(directory, threshold = 0) {
     ids = df[df["nobs"] > threshold, ]$id
     corrr = numeric()
     for (i in ids) {
-newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), 
-            ".csv", sep = ""))
+newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
         dff = newRead[complete.cases(newRead), ]
         corrr = c(corrr, cor(dff$sulfate, dff$nitrate))
     }
