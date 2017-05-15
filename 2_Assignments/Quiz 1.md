@@ -171,10 +171,10 @@ How many missing values are in the Ozone column of this data frame?
 ## Explanation
 ```
 #Calculate how many missing data
-> length(which(is.na(data)))
+> length(which(is.na(data))) or sum(is.na(data1))
 [1] 44
 #Calculate how many missing date with column name of Ozone
-> datana<-subset(data,is.na(Ozone))
+> datana<-subset(data,is.na(Ozone))  OR  sum(is.na(data1$Ozone))
 > nrow(datana)
 [1] 37
 ```
@@ -192,6 +192,11 @@ What is the mean of the Ozone column in this dataset? Exclude missing values (co
     Ozone   Solar.R      Wind      Temp     Month       Day 
 42.129310        NA  9.862069 77.870690  7.198276 15.534483 
 ```
+OR
+```r
+> mean(data1$Ozone, na.rm=T)
+# [1] 42.12931
+```
 -----------------------------
 # Question 18
 Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. What is the mean of Solar.R in this subset?
@@ -206,6 +211,20 @@ Extract the subset of rows of the data frame where Ozone values are above 31 and
 Solar.R 
   212.8 
 ```
+or
+```r
+> subdata <- subset(data1,Ozone > 31 & Temp > 90)
+> head(subdata)
+    Ozone Solar.R Wind Temp Month Day
+69     97     267  6.3   92     7   8
+70     97     272  5.7   92     7   9
+120    76     203  9.7   97     8  28
+121   118     225  2.3   94     8  29
+122    84     237  6.3   96     8  30
+123    85     188  6.3   94     8  31
+> mean(subdata$Solar.R,na.rm = T)
+[1] 212.8
+```
 ----------------------------------
 # Question 19
 What is the mean of "Temp" when "Month" is equal to 6?
@@ -214,11 +233,25 @@ What is the mean of "Temp" when "Month" is equal to 6?
 79.1
 ```
 ## Explanation
-```
+```r
 > datasub19<-subset(data,data$Month==6,select=Temp)
 > apply(datasub19,2,mean)
 Temp 
 79.1 
+
+or
+
+> sub1 <- subset(data1, Month == 6)
+> head(sub1)
+   Ozone Solar.R Wind Temp Month Day
+32    NA     286  8.6   78     6   1
+33    NA     287  9.7   74     6   2
+34    NA     242 16.1   67     6   3
+35    NA     186  9.2   84     6   4
+36    NA     220  8.6   85     6   5
+37    NA     264 14.3   79     6   6
+> mean(sub1$Temp,na.rm=T)
+[1] 79.1
 ```
 -----------------------------
 # Question 20
@@ -228,10 +261,15 @@ What was the maximum ozone value in the month of May (i.e. Month = 5)?
 115
 ```
 ## Explanation
-```
+```r
 > datasub20<-subset(data,!is.na(Ozone)&data$Month==5,select=Ozone)
 > apply(datasub20,2,max)
 Ozone 
-  115 
+  115
+
+OR
+> sub1 <- subset(data1, Month == 5)
+> max(sub1$Ozone,na.rm=T)
+[1] 115
 ```
 
