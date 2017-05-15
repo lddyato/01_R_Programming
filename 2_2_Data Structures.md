@@ -370,16 +370,23 @@ Vectors
 
 Factors
 -------
+```r
+	> f <-gl(40, 10) 
+	# gl(n, k, length = n*k, labels = seq_len(n), ordered = FALSE)
 
-	> f <-gl(40, 10)
+#　n : an integer giving the number of levels.
+k: an integer giving the number of replications.
+length: an integer giving the length of the result.
+labels: an optional vector of labels for the resulting factor levels.
+ordered: a logical indicating whether the result should be ordered or not.
+
 	> str(f)
 	 Factor w/ 40 levels "1","2","3","4",..: 1 1 1 1 1 1 1 1 1 1 ...
 	> summary(f)
 	 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 
 	10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 
 	27 28 29 30 31 32 33 34 35 36 37 38 39 40 
-	10 10 10 10 10 10 10 10 10 10 10 10 10 10 
-
+	10 10 10 10 10 10 10 10 10 10 10 10 10 10 ```
 
 Data Frames
 -----------
