@@ -1,5 +1,5 @@
-Questions
-# Questions 1. 
+
+# Questions 1
 Take a look at the ‘iris’ dataset that comes with R. The data can be loaded with the code:
 ```r
 library(datasets)
@@ -17,7 +17,7 @@ There will be an object called ‘iris’ in your workspace. In this dataset, wh
 The which function creates an index for virginica species, the $ operator singles out the Sepal.Length column, then the mean and round function do the rest.
 ```r
 round(mean(iris[which(iris$Species == "virginica"),]$Sepal.Length))
-## [1] 7
+ [1] 7
 ```
 
 # Question 2
@@ -92,10 +92,10 @@ Using the built in looping tapply function to aggregate and then round/abs.
 ```r
 new <- tapply(mtcars$hp, mtcars$cyl, mean)
 round(abs(new[3]-new[1]))
-##   8 
-## 127
+   8 
+  127
 
-# OR
+OR
 > sub1 <- mtcars %>% group_by(cyl) %>% summarise(meanhp = mean(hp))
 > round(sub1[3,2]-sub1[1,2])
   meanhp
