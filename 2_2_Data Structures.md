@@ -372,13 +372,12 @@ Factors
 -------
 ```r
 	> f <-gl(40, 10) 
-	# gl(n, k, length = n*k, labels = seq_len(n), ordered = FALSE)
-
+	# generate factor levels: gl(n, k, length = n*k, labels = seq_len(n), ordered = FALSE)
 #　n : an integer giving the number of levels.
-k: an integer giving the number of replications.
-length: an integer giving the length of the result.
-labels: an optional vector of labels for the resulting factor levels.
-ordered: a logical indicating whether the result should be ordered or not.
+# k: an integer giving the number of replications.
+# length: an integer giving the length of the result.
+# labels: an optional vector of labels for the resulting factor levels.
+# ordered: a logical indicating whether the result should be ordered or not.
 
 	> str(f)
 	 Factor w/ 40 levels "1","2","3","4",..: 1 1 1 1 1 1 1 1 1 1 ...
