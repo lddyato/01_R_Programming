@@ -16,44 +16,72 @@ For this programming assignment you will need to unzip this file and create the 
 
 Write a function named 'pollutantmean' that calculates the mean of a pollutant (sulfate or nitrate) across a specified list of monitors. The function 'pollutantmean' takes three arguments: 'directory', 'pollutant', and 'id'. Given a vector monitor ID numbers, 'pollutantmean' reads that monitors' particulate matter data from the directory specified in the 'directory' argument and returns the mean of the pollutant across all of the monitors, ignoring any missing values coded as NA. A prototype of the function is as follows
 
-<img src="https://d3c33hcgiwev3.cloudfront.net/imageAssetProxy.v1/AniR5o00EeWk4wrqfRkIMQ_26d94fc4f878a8b60240f6fda6e17f6c_Screen-Shot-2015-11-17-at-9.03.29-AM.png?expiry=1477353600000&hmac=bUJPIFPoqfWIKoNB6NEITZ0q-UwcsqvCFjDlkHht1dU">
+```r
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+        ## 'directory' is a character vector of length 1 indicating
+        ## the location of the CSV files
 
+        ## 'pollutant' is a character vector of length 1 indicating
+        ## the name of the pollutant for which we will calculate the
+        ## mean; either "sulfate" or "nitrate".
+
+        ## 'id' is an integer vector indicating the monitor ID numbers
+        ## to be used
+
+        ## Return the mean of the pollutant across all monitors list
+        ## in the 'id' vector (ignoring NA values)
+        ## NOTE: Do not round the result!
+}
+```
 You can see some example output from this function. The function that you write should be able to match this output. Please save your code to a file named pollutantmean.R.
 
 ## Part 2
 
 Write a function that reads a directory full of files and reports the number of completely observed cases in each data file. The function should return a data frame where the first column is the name of the file and the second column is the number of complete cases. A prototype of this function follows
 
-<img src="https://d3c33hcgiwev3.cloudfront.net/imageAssetProxy.v1/Jnt5oY00EeWisRLkE7o57Q_2713e281672695ec59b29f83ec95f7b1_Screen-Shot-2015-11-17-at-9.04.23-AM.png?expiry=1477353600000&hmac=O-e-ZAVHEPYurvXrnSATS3LShsw1dBoSoS1vNpcmSV8">
+```r
+complete <- function(directory, id = 1:332) {
+        ## 'directory' is a character vector of length 1 indicating
+        ## the location of the CSV files
 
+        ## 'id' is an integer vector indicating the monitor ID numbers
+        ## to be used
+        
+        ## Return a data frame of the form:
+        ## id nobs
+        ## 1  117
+        ## 2  1041
+        ## ...
+        ## where 'id' is the monitor ID number and 'nobs' is the
+        ## number of complete cases
+}
+```
 You can see some example output from this function. The function that you write should be able to match this output. Please save your code to a file named complete.R. To run the submit script for this part, make sure your working directory has the file complete.R in it.
 
 ## Part 3
 
 Write a function that takes a directory of data files and a threshold for complete cases and calculates the correlation between sulfate and nitrate for monitor locations where the number of completely observed cases (on all variables) is greater than the threshold. The function should return a vector of correlations for the monitors that meet the threshold requirement. If no monitors meet the threshold requirement, then the function should return a numeric vector of length 0. A prototype of this function follows
+```r
+corr <- function(directory, threshold = 0) {
+        ## 'directory' is a character vector of length 1 indicating
+        ## the location of the CSV files
 
-<img src="https://d3c33hcgiwev3.cloudfront.net/imageAssetProxy.v1/OXaiR400EeWk4wrqfRkIMQ_dafbb49ef127335cf1f9468fcadbd4ee_Screen-Shot-2015-11-17-at-9.05.01-AM.png?expiry=1477353600000&hmac=PgfBSvM3gpbFF6YoM-ihUDhH2yt_5NghwXY_49Huvd4">
+        ## 'threshold' is a numeric vector of length 1 indicating the
+        ## number of completely observed observations (on all
+        ## variables) required to compute the correlation between
+        ## nitrate and sulfate; the default is 0
 
+        ## Return a numeric vector of correlations
+        ## NOTE: Do not round the result!
+}
+```
 For this function you will need to use the 'cor' function in R which calculates the correlation between two vectors. Please read the help page for this function via '?cor' and make sure that you know how to use it.
 
 You can see some example output from this function. The function that you write should be able to match this output. Please save your code to a file named corr.R. To run the submit script for this part, make sure your working directory has the file corr.R in it.
 
-## Grading
-
-This assignment will be graded using a quiz.
-
-
 ## Question 1
 ```r
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-    ## 'directory' is a character vector of length 1 indicating the location of
-    ## the CSV files
-## 'pollutant' is a character vector of length 1 indicating the name of the
-    ## pollutant for which we will calculate the mean; either 'sulfate' or
-    ## 'nitrate'.
-## 'id' is an integer vector indicating the monitor ID numbers to be used
-## Return the mean of the pollutant across all monitors list in the 'id'
-## vector (ignoring NA values)
     data = numeric()
     for (i in id) {
 newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
@@ -81,11 +109,6 @@ return(mean(unlist(data), na.rm = TRUE))
 ## Question 2
 ```r
 complete <- function(directory, id = 1:332) {
-    ## 'directory' is a character vector of length 1 indicating the location of
-    ## the CSV files
-## 'id' is an integer vector indicating the monitor ID numbers to be used
-## Return a data frame of the form: id nobs 1 117 2 1041 ...  where 'id' is
-    ## the monitor ID number and 'nobs' is the number of complete cases
     nobs = numeric()
     for (i in id) {
 newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
@@ -166,12 +189,7 @@ complete <- function(directory, id = 1:332) {
 ## Question 3
 ```r
 corr <- function(directory, threshold = 0) {
-    ## 'directory' is a character vector of length 1 indicating the location of
-    ## the CSV files
-## 'threshold' is a numeric vector of length 1 indicating the number of
-    ## completely observed observations (on all variables) required to compute
-    ## the correlation between nitrate and sulfate; the default is 0
-## Return a numeric vector of correlations
+
     df = complete(directory)
     ids = df[df["nobs"] > threshold, ]$id
     corrr = numeric()
