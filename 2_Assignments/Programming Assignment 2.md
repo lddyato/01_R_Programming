@@ -1,4 +1,4 @@
-### Introduction
+# Introduction
 
 This second programming assignment will require you to write an R
 function that is able to cache potentially time-consuming computations.
@@ -12,7 +12,7 @@ Programming Assignment you will take advantage of the scoping rules of
 the R language and how they can be manipulated to preserve state inside
 of an R object.
 
-### Example: Caching the Mean of a Vector
+# Example: Caching the Mean of a Vector
 
 In this example we introduce the `<<-` operator which can be used to
 assign a value to an object in an environment that is different from the
@@ -27,8 +27,7 @@ really a list containing a function to
 3.  set the value of the mean
 4.  get the value of the mean
 
-<!-- -->
-
+```r
     makeVector <- function(x = numeric()) {
             m <- NULL
             set <- function(y) {
@@ -42,14 +41,14 @@ really a list containing a function to
                  setmean = setmean,
                  getmean = getmean)
     }
-
+```
 The following function calculates the mean of the special "vector"
 created with the above function. However, it first checks to see if the
 mean has already been calculated. If so, it `get`s the mean from the
 cache and skips the computation. Otherwise, it calculates the mean of
 the data and sets the value of the mean in the cache via the `setmean`
 function.
-
+```r
     cachemean <- function(x, ...) {
             m <- x$getmean()
             if(!is.null(m)) {
@@ -61,8 +60,8 @@ function.
             x$setmean(m)
             m
     }
-
-### Assignment: Caching the Inverse of a Matrix
+```
+# Assignment: Caching the Inverse of a Matrix
 
 Matrix inversion is usually a costly computation and there may be some
 benefit to caching the inverse of a matrix rather than computing it
@@ -100,6 +99,62 @@ In order to complete this assignment, you must do the following:
 5.  Submit to Coursera the URL to your GitHub repository that contains
     the completed R code for the assignment.
 
-### Grading
+# Answer:
+```r
+## Lexical Scoping--caching the inverse of a matrix
+## makeCacheMatrix creates a special "matrix"
+## which is really a list containing a function to 
+# set the value of the matrix
+# get the value of the matrix
+# set the value of the inverse
+# get the value of the inverse
 
-This assignment will be graded via peer assessment.
+makeCacheMatrix <- function(x = matrix()) {
+i <- NULL
+set <- function(y){
+     x <<- y
+     i <<- NULL
+}
+get <- function() x
+setinverse <- function(inverse) i <<- inverse
+getinverse <- function() i
+list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
+}
+
+## The following function calculates the mean of the special "vector" created with 
+## the above function. However, it first checks to see if the mean has already been 
+## calculated. If so, it gets the mean from the cache and skips the computation. 
+## Otherwise, it calculates the mean of the data and sets the value of the mean in 
+## the cache via the setmean function.
+## this function assumes that the matrix supplied is always invertible.
+
+cacheSolve <- function(x, ...) {
+i <- x$getinverse()
+if(!is.null(i)){
+    message("getting cached data.")
+    return (i)}
+data <- x$get()
+i <- solve(data, ...)
+x$setinverse(i)
+i
+}
+```
+
+## Sample
+```r
+> Cmatrix <- makeCacheMatrix()
+> x <- matrix(c(1, 1, 2, -1, 2, 0, 1, 1, 3), 3, 3, byrow=T)
+>  Cmatrix$set(x)
+> Cmatrix$get()
+     [,1] [,2] [,3]
+[1,]    1    1    2
+[2,]   -1    2    0
+[3,]    1    1    3
+> Cmatrix$getinverse()
+NULL
+> cacheSolve(Cmatrix)
+     [,1]       [,2]       [,3]
+[1,]    2 -0.3333333 -1.3333333
+[2,]    1  0.3333333 -0.6666667
+[3,]   -1  0.0000000  1.0000000
+```
