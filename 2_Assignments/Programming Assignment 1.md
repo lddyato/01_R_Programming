@@ -94,6 +94,12 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     data = lapply(id, function(i) read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))[[pollutant]])
 return(mean(unlist(data), na.rm = TRUE))
 }
+
+Example
+data = lapply(1:10, function(i) read.csv(paste("specdata", "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))[["sulfate"]])
+# this is a list, so you should unlist the data
+mean(unlist(data), na.rm=TRUE)
+# [1] 4.064128
 ```
 ## Answers
 ```r
