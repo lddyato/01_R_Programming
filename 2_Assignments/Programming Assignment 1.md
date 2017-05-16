@@ -195,12 +195,11 @@ complete <- function(directory, id = 1:332) {
 ## Question 3
 ```r
 corr <- function(directory, threshold = 0) {
-
-    df = complete(directory)
-    ids = df[df["nobs"] > threshold, ]$id
+    df = complete(directory) # using the previous function for easy indexing
+    ids = df[df["nobs"] > threshold, ]$id # select the rows which nobs is greater than threshold
     corrr = numeric()
     for (i in ids) {
-newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
+        newRead = read.csv(paste(directory, "/", formatC(i, width = 3, flag = "0"), ".csv", sep = ""))
         dff = newRead[complete.cases(newRead), ]
         corrr = c(corrr, cor(dff$sulfate, dff$nitrate))
     }
