@@ -211,6 +211,7 @@ best <- function(state, outcome)
 ```
 
 # Answers-Part 2-rankhospital.R
+
 ```r
 rankhospital <- function(state, outcome, num)
 {
@@ -260,6 +261,7 @@ rankhospital <- function(state, outcome, num)
 ```
 
 # Answers-Part 3-rankall.R
+
 ```r
 rankall<- function(outcome, num = "best")
 {
