@@ -183,7 +183,7 @@ WY                                        CHEYENNE VA MEDICAL CENTER   WY
 Save your code for this function to a file named rankall.R.
 
 # Answers-Part 1-best.R
-````r
+```r
 setwd("D:/coursera/ProgrammingAssignment3")
 best <- function(state, outcome)
         {
@@ -238,8 +238,7 @@ rankhospital <- function(state, outcome, num)
     
         orderdata[num, 2]
 }
-
-# Sample
+Sample:
 #>  rankhospital("MD", "heart attack", "worst")
 #[1] "HARFORD MEMORIAL HOSPITAL"
 
@@ -292,7 +291,7 @@ rankall<- function(outcome, num = "best")
         data.frame(hospital=hospital, state=newstate)
 }
         
-# Sample 
+Sample:
 #> head(rankall("heart attack", 20), 10)
 #hospital state
 #1                                 <NA>    AK
