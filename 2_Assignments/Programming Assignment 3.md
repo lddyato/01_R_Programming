@@ -191,16 +191,14 @@ best <- function(state, outcome)
         # if not using "colClass" option, death rate will be factor class and as.numberic() will get wrong data
         newstate <- unique(data[, 7])
         newoutcome <- c("heart attack", "heart failure", "pneumonia")
-        if(!state %in% newstate)
-                {stop("invalid state")}
-        if(!outcome %in% newoutcome)
-                {stop("invalid outcome")}
-        if(outcome == "heart attack"){col <- 11}
-        if(outcome == "heart failure"){col <- 17}
-        if(outcome == "pneumonia"){col <- 23}
-        newdata <- data[data$State == state, ]
-        indexmin <- which.min(as.numeric(newdata[, col]))
-        newdata[indexmin, 2]
+        if(!state %in% newstate) {stop("invalid state")}
+        if(!outcome %in% newoutcome) {stop("invalid outcome")}
+        if(outcome == "heart attack") {col <- 11}
+        if(outcome == "heart failure") {col <- 17}
+        if(outcome == "pneumonia") {col <- 23}
+        newdata <- data[data$State == state, ] #    newdata = subset(data, State == state, select=c(7, 2, col))     
+        indexmin <- which.min(as.numeric(newdata[, col])) #  orderdata = newdata[order(as.numeric(newdata[[3]])),][1,]
+        newdata[indexmin, 2] #  return (orderdata$Hospital.Name) 
         }
 #> best("SC", "heart attack")
 #[1] "MUSC MEDICAL CENTER"
@@ -210,4 +208,99 @@ best <- function(state, outcome)
 
 #> best("AK", "pneumonia")
 #[1] "YUKON KUSKOKWIM DELTA REG HOSPITAL"
+```
+
+# Answers-Part 2-rankhospital.R
+```r
+rankhospital <- function(state, outcome, num)
+{
+        data <- read.csv("outcome-of-care-measures.csv", colClass="character")
+        # if not using "colClass" option, death rate will be factor class and as.numberic() will get wrong data
+        newstate <- unique(data[, 7])  # unique(data$State)
+        newoutcome <- c("heart attack", "heart failure", "pneumonia")
+	
+        if(!state %in% newstate)
+        {stop("invalid state")}
+        if(!outcome %in% newoutcome)
+        {stop("invalid outcome")}
+        
+        if(outcome == "heart attack"){col <- 11}
+        if(outcome == "heart failure"){col <- 17}
+        if(outcome == "pneumonia"){col <- 23}
+        
+        newdata <- data[data$State == state, ]
+        orderdata <- newdata[order(as.numeric(newdata[, col]), newdata[, 2], na.last = NA), ] # default is ascending
+        
+        if(num == "best") {num = 1}  # head(orderdata, 1)--first row
+        if(num == "worst") {num = nrow(orderdata)}  # tail(orderdata,1)--last row
+        if(num > length(unique(newdata[,2]))) {return (NA)}
+    
+        orderdata[num, 2]
+}
+
+# Sample
+#>  rankhospital("MD", "heart attack", "worst")
+#[1] "HARFORD MEMORIAL HOSPITAL"
+
+#> rankhospital("NC", "heart attack", "worst")
+#[1] "WAYNE MEMORIAL HOSPITAL"
+
+#> rankhospital("WA", "heart attack", 7)
+#[1] "YAKIMA VALLEY MEMORIAL HOSPITAL"
+                
+
+#> rankhospital("TX", "pneumonia", 10)
+#[1] "SETON SMITHVILLE REGIONAL HOSPITAL"
+                               
+#> rankhospital("NY", "heart attack", 7)
+#[1] "BELLEVUE HOSPITAL CENTER"
+#Warning message:
+#In order(as.numeric(newdata[, col]), newdata[, 2], decreasing = FALSE,  :
+#NAs introduced by coercion
+```
+
+# Answers-Part 3-rankall.R
+```r
+rankall<- function(outcome, num = "best")
+{
+        data <- read.csv("outcome-of-care-measures.csv", colClass="character")
+        # if not using "colClass" option, death rate will be factor class and as.numberic() will get wrong data
+        newstate <- sort(unique(data[, 7]))
+        newoutcome <- c("heart attack", "heart failure", "pneumonia")
+        
+        if(!outcome %in% newoutcome)
+        {stop("invalid outcome")}
+        
+        if(outcome == "heart attack"){col <- 11}
+        if(outcome == "heart failure"){col <- 17}
+        if(outcome == "pneumonia"){col <- 23}
+        
+        hospital <- character(0)
+	# df = data.frame()
+        
+        for (i in seq_along(newstate)){
+                newdata <- data[data$State == newstate[i], ]
+                orderdata <- newdata[order(as.numeric(newdata[, col]), newdata[, 2], na.last = NA), ]
+                if(num == "best") num = 1
+                if(num == "worst") num = nrow(orderdata)
+                hospital[i] <- orderdata[num, 2]
+		# df = rbind(df, orderdata[num,c(2,7)])
+        }
+                
+        data.frame(hospital=hospital, state=newstate)
+}
+        
+# Sample 
+#> head(rankall("heart attack", 20), 10)
+#hospital state
+#1                                 <NA>    AK
+#2       D W MCMILLAN MEMORIAL HOSPITAL    AL
+#3    ARKANSAS METHODIST MEDICAL CENTER    AR
+#4  JOHN C LINCOLN DEER VALLEY HOSPITAL    AZ
+#5                SHERMAN OAKS HOSPITAL    CA
+#6             SKY RIDGE MEDICAL CENTER    CO
+#7              MIDSTATE MEDICAL CENTER    CT
+#8                                 <NA>    DC
+#9                                 <NA>    DE
+#10      SOUTH FLORIDA BAPTIST HOSPITAL    FL
 ```
