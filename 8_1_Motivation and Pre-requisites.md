@@ -29,8 +29,8 @@ A useful package - the caret package
 ## What is prediction?
 
 ### components of a preditor
-**question -> input data -> features -> algorithm -> parameters -> evaluation**
-### Step 1
+**question > input data > features > algorithm -> parameters -> evaluation**
+### Step 1: Question
 * Start with a general question    
 Can I automatically detect emails that are SPAM that are not?
 * Make it concrete     
@@ -38,9 +38,36 @@ Can I use quantitative characteristics of the emails to classify them as SPAM/HA
 
 ### Step 2: INput data
 <http://rss.acs.edu/Rdoc/library/kernlab/html/spam.html>
+"The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.----John Tukey
 
-### Step 3: features
+**Garbage in = Garbage out**
+* May be easy (movie ratings -> new movie ratings)
+* May be harder (gene expression data -> disease)
+* Depends on what is a "good prediction".
+* Often more data > better models
+* The most important step!
 
+### Step 3: features matter!
+Properties of good features:
+* Lead to data compression
+* Retain relevant information
+* Are created based on expert application knowledge
+
+Common mistakes:
+* Trying to automate feature selection
+* Not paying attention to data-specific quirks
+* Throwing away information unnecessarily
+
+### Step 4: Algorithms matter less than you'd think
+<img src="https://github.com/lddyato/R_Language/blob/master/SubFiles/08/illusiontable.png">
+
+### The "Best" Machine Learning method
+Prediction is about accuracy tradeoffs
+* Interpretability versus accuracy
+* Speed versus accuracy
+* Simplicity versus accuracy
+* Scalability versus accuracy
+The "
 ```r
  install.packages("kernlab")
 library(kernlab)
@@ -125,9 +152,9 @@ abline(v=0.5, col = "black")
 ```r
 prediction <- ifelse(spam$your > 0.5, "spam", "nonspam")
 table(prediction, spam$type)/length(spam$type)
-#prediction   nonspam      spam
-#   nonspam 0.4590306 0.1017170
-#   spam    0.1469246 0.2923278
+prediction   nonspam      spam
+   nonspam 0.4590306 0.1017170
+   spam    0.1469246 0.2923278
 Accuracy = 0.459 + 0.292 = 0.751
 ```
 
